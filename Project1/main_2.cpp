@@ -30,9 +30,9 @@ int main()
 	Diagram diagram_3b("-_____----__");
 	std::cout << "3. Unit into diagram: max size = " << diagram_3a.getMaxSize() << std::endl;
 
-	std::cout << "First Diagram. Current size = " << diagram_3a.getEnd() << "; Diagram :";
+	std::cout << "First Diagram. Current size = " << diagram_3a.getEnd() << "; Diagram : ";
 	std::cout << diagram_3a;
-	std::cout << "Second Diagram. Current size = " << diagram_3b.getEnd() << "; Diagram :";
+	std::cout << "Second Diagram. Current size = " << diagram_3b.getEnd() << "; Diagram : ";
 	std::cout << diagram_3b;
 
 	try {
@@ -42,7 +42,7 @@ int main()
 	{
 		std::cout << msg.what() << std::endl;
 	}
-	std::cout << "Unit. Current size = " << diagram_3a.getEnd() << "; Diagram :";
+	std::cout << "Unit. Current size = " << diagram_3a.getEnd() << "; Diagram : ";
 	std::cout << diagram_3a;
 	std::cout << std::endl;
 
@@ -63,7 +63,7 @@ int main()
 	{
 		std::cout << msg.what() << std::endl;
 	}
-	std::cout << "Unit. Current size = " << diagram_4a.getEnd() << "; Current time = " << diagram_4a.getCurrTime() << "; Diagram : ";
+	std::cout << "Unit. Current size = " << diagram_4a.getEnd() << "; Current time = " << diagram_4a.getCurrTime() << "; Diagram: ";
 	std::cout << diagram_4a;
 	std::cout << std::endl;
 

@@ -47,11 +47,13 @@ namespace Prog3_1 {
 	// 2 - MaxInit constructor
 	Diagram::Diagram(int state) :end(1), size(MAX_TIME) {
 
-		if ((state != -1) && (state != 0) && (state != 1)) {
-			state = -1;
+		if ((state < -1) || (state > 1)) {
+			throw std::exception(" >>> Undefuned state");
 		}
-		diagram[0] = { state, MAX_TIME };
+		else
+			diagram[0] = { state, MAX_TIME };
 	}
+
 
 	// 3 - ASCII constructor
 	Diagram::Diagram(const char* diagram) {
@@ -74,8 +76,8 @@ namespace Prog3_1 {
 		int state;
 
 		for (int i = 0; i <= len; ++i) {
+			state = returnState(ch);
 			if ((diagram[i] != ch) || (i == len)) {
-				state = returnState(ch);
 				if (state == 2) {
 					error1 = true;
 					break;
@@ -86,7 +88,7 @@ namespace Prog3_1 {
 				ch = diagram[i];
 				++end;
 			}
-			else
+			else if (state != 2)
 				++time;
 		}
 
@@ -95,6 +97,9 @@ namespace Prog3_1 {
 		}
 		else if (error2) {
 			std::cout << " >> Size of diagram more than max, diagram was cutted\n";
+		}
+		else if (size == 0) {
+			throw std::exception(" >>> Empty diagram");
 		}
 	}
 
@@ -123,8 +128,8 @@ namespace Prog3_1 {
 		int state;
 
 		for (int i = 0; i <= len; ++i) {
+			state = returnState(ch);
 			if ((diagram[i] != ch) || (i == len)) {
-				state = returnState(ch);
 				if (state == 2) {
 					error1 = true;
 					break;
@@ -135,7 +140,7 @@ namespace Prog3_1 {
 				ch = diagram[i];
 				++_diagram.end;
 			}
-			else
+			else if (state != 2)
 				++time;
 		}
 
@@ -144,6 +149,9 @@ namespace Prog3_1 {
 		}
 		else if (error2) {
 			std::cout << " >> Size of diagram more than max, diagram was cutted\n";
+		}
+		else if (_diagram.size == 0) {
+			throw std::exception(" >>> Empty diagram");
 		}
 
 		return i;

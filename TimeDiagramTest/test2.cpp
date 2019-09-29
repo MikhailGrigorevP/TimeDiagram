@@ -221,14 +221,25 @@ TEST(TimeDiagramMethods, shift) {
 
 TEST(TimeDiagramMethods, exeptions) {
 
+	//Try to create diagram with undefined symbols
+	ASSERT_ANY_THROW(Prog3_1::Diagram diagram_exp(-2));
+	ASSERT_ANY_THROW(Prog3_1::Diagram diagram_exp(24));
+
+	//Try to create empty diagram
+	ASSERT_ANY_THROW(Prog3_1::Diagram diagram_exp("&&&-___----___-"));
+
 	Prog3_1::Diagram diagram_exp(1);
 
+	//Try to copy negative times
 	ASSERT_ANY_THROW(diagram_exp *= (-3));
 
+	//Try to shift diagram left negative times
 	ASSERT_ANY_THROW(diagram_exp < -4);
 
+	//Try to shift diagram right negative times
 	ASSERT_ANY_THROW(diagram_exp < -5);
 
+	//Try to change wrong diagram
 	ASSERT_ANY_THROW(diagram_exp({ -2, 4 }));
 	ASSERT_ANY_THROW(diagram_exp({ 5, 6 }));
 	ASSERT_ANY_THROW(diagram_exp({ 1, 664 }));
