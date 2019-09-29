@@ -53,8 +53,8 @@ int main()
 	std::cout << "Input second diagram: ";
 	std::cin >> diagram_4b;
 	std::cout << std::endl;
-	std::cout << "Your first diagram. Current size = " << diagram_4a.getEnd() << "; Current time = " << diagram_4a.getCurrTime() << ";" << std::endl;
-	std::cout << "Your second diagram. Current size = " << diagram_4b.getEnd() << "; Current time = " << diagram_4b.getCurrTime() << ";" << std::endl;
+	std::cout << "Your first diagram. Current size = " << diagram_4a.getEnd() << "; Current time = " << diagram_4a.getCurrTime() << "; " << std::endl;
+	std::cout << "Your second diagram. Current size = " << diagram_4b.getEnd() << "; Current time = " << diagram_4b.getCurrTime() << "; " << std::endl;
 
 	try {
 		diagram_4a += diagram_4b;
