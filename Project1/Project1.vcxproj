@@ -20,13 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="diagram.cpp" />
-    <ClCompile Include="diagram_2.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="main_2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="diagram.h" />
-    <ClInclude Include="diagram_2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
