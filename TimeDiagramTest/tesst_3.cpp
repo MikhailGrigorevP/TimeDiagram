@@ -338,10 +338,10 @@ TEST(TimeDiagramMethods, exeptions) {
 
 	Prog3_1::Diagram diagram_exp2(1);
 
-	////Try to change wrong diagram
-	//ASSERT_ANY_THROW(diagram_exp2("--------", 55));
-	//ASSERT_ANY_THROW(diagram_exp2("_", 102));
-	//ASSERT_ANY_THROW(diagram_exp2("*", -6));
+	//Try to change wrong diagram
+	ASSERT_ANY_THROW(diagram_exp2("--------", 55));
+	ASSERT_ANY_THROW(diagram_exp2("_", 102));
+	ASSERT_ANY_THROW(diagram_exp2("*", -6));
 
 	//Test indexation
 	ASSERT_ANY_THROW(diagram_exp2[-25]);

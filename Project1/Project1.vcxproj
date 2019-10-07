@@ -19,11 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="diagram_2.cpp" />
-    <ClCompile Include="main_2.cpp" />
+    <ClCompile Include="diagram_3.cpp" />
+    <ClCompile Include="main_3.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="diagram_2.h" />
+    <ClInclude Include="diagram_3.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
