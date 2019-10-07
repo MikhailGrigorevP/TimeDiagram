@@ -42,9 +42,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="tesst_3.cpp" />
     <ClCompile Include="test.cpp" />
-    <ClCompile Include="test2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Project1\Project1.vcxproj">
