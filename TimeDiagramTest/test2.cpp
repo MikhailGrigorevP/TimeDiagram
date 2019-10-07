@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "..//..///TimeDiagram/Project1/diagram_2.cpp"
+
 TEST(TimeDiagramConstructors, EmptyConstractor) {
 
 	//StandartEmpty
@@ -156,19 +157,102 @@ TEST(TimeDiagramMethods, unit) {
 }
 
 TEST(TimeDiagramMethods, change) {
+
 	Prog3_1::Diagram diagram_change("---___---");
-	diagram_change({ -1, 4 });
+	diagram_change("*", 5);
 
 	std::ostringstream output;
 	output << diagram_change;
 	EXPECT_EQ("---_*_---\n", output.str());
+	ASSERT_EQ(5, diagram_change.getEnd());
+	ASSERT_EQ(9, diagram_change.getCurrTime());
+
+	//
+	Prog3_1::Diagram diagram_change2("--__--___-_-__-________---");
+	diagram_change2("---", 6);
+	std::ostringstream output2;
+
+	output2 << diagram_change2;
+	EXPECT_EQ("--__----_-_-__-________---\n", output2.str());
+	ASSERT_EQ(11, diagram_change2.getEnd());
+	ASSERT_EQ(26, diagram_change2.getCurrTime());
+
+	//
+	Prog3_1::Diagram diagram_change3("-__--_______--_-_");
+	diagram_change3("------", 1);
+	std::ostringstream output3;
+
+	output3 << diagram_change3;
+	EXPECT_EQ("------______--_-_\n", output3.str());
+	ASSERT_EQ(6, diagram_change3.getEnd());
+	ASSERT_EQ(17, diagram_change3.getCurrTime());
+
+	//
+	Prog3_1::Diagram diagram_change4("-___--___---___--___-_--_");
+	diagram_change4("-", 25);
+	std::ostringstream output4;
+
+	output4 << diagram_change4;
+	EXPECT_EQ("-___--___---___--___-_---\n", output4.str());
+	ASSERT_EQ(11, diagram_change4.getEnd());
+	ASSERT_EQ(25, diagram_change4.getCurrTime());
+
+	//
+	Prog3_1::Diagram diagram_change5("__--__--__--__--__--__--");
+	diagram_change5("_--_", 4);
+	std::ostringstream output5;
+
+	output5 << diagram_change5;
+	EXPECT_EQ("__-_--_-__--__--__--__--\n", output5.str());
+	ASSERT_EQ(14, diagram_change5.getEnd());
+	ASSERT_EQ(24, diagram_change5.getCurrTime());
+
+	//
+	Prog3_1::Diagram diagram_change6("-__--__--");
+	diagram_change6("_--__--__", 1);
+	std::ostringstream output6;
+
+	output6 << diagram_change6;
+	EXPECT_EQ("_--__--__\n", output6.str());
+	ASSERT_EQ(5, diagram_change6.getEnd());
+	ASSERT_EQ(9, diagram_change6.getCurrTime());
+
+	//
+	Prog3_1::Diagram diagram_change7("_---_----_---_-___---___--_--");
+	diagram_change7("-----", 10);
+	std::ostringstream output7;
+
+	output7 << diagram_change7;
+	EXPECT_EQ("_---_----------___---___--_--\n", output7.str());
+	ASSERT_EQ(10, diagram_change7.getEnd());
+	ASSERT_EQ(29, diagram_change7.getCurrTime());
+
+	//
+	Prog3_1::Diagram diagram_change8("-___---__--___---___--___-__--");
+	diagram_change8("---___", 2);
+	std::ostringstream output8;
+
+	output8 << diagram_change8;
+	EXPECT_EQ("----_____--___---___--___-__--\n", output8.str());
+	ASSERT_EQ(11, diagram_change8.getEnd());
+	ASSERT_EQ(30, diagram_change8.getCurrTime());
+
+	//
+	Prog3_1::Diagram diagram_change9("-___---__--___---___--___-__--");
+	diagram_change9("-__-", 9);
+	std::ostringstream output9;
+
+	output9 << diagram_change9;
+	EXPECT_EQ("-___---_-__-__---___--___-__--\n", output9.str());
+	ASSERT_EQ(15, diagram_change9.getEnd());
+	ASSERT_EQ(30, diagram_change9.getCurrTime());
 }
 
 TEST(TimeDiagramMethods, copy) {
 
 	//Standart copy
 	Prog3_1::Diagram diagram_copy("--__--");
-	diagram_copy *= 5;
+	diagram_copy(5);
 
 	std::ostringstream output;
 	output << diagram_copy;
@@ -178,7 +262,7 @@ TEST(TimeDiagramMethods, copy) {
 
 	//Copy with overflow
 	Prog3_1::Diagram diagram_copy2("-----_____");
-	diagram_copy2 *= 5;
+	diagram_copy2(5);
 
 	std::ostringstream output2;
 	output2 << diagram_copy2;
@@ -194,7 +278,7 @@ TEST(TimeDiagramMethods, shift) {
 	ASSERT_EQ(3, diagram_copy.getEnd());
 	ASSERT_EQ(12, diagram_copy.getCurrTime());
 
-	diagram_copy < 5;
+	diagram_copy <<= 5;
 
 	ASSERT_EQ(2, diagram_copy.getEnd());
 	ASSERT_EQ(12, diagram_copy.getCurrTime());
@@ -210,13 +294,22 @@ TEST(TimeDiagramMethods, shift) {
 	ASSERT_EQ(2, diagram_copy2.getEnd());
 	ASSERT_EQ(10, diagram_copy2.getCurrTime());
 
-	diagram_copy2 > 4;
+	diagram_copy2 >>= 4;
 
 	std::ostringstream output2;
 	output2 << diagram_copy2;
 	ASSERT_EQ(3, diagram_copy2.getEnd());
 	ASSERT_EQ(10, diagram_copy2.getCurrTime());
 	EXPECT_EQ("____-----_\n", output2.str());
+}
+
+TEST(TimeDiagramMethods, index) {
+
+	Prog3_1::Diagram diagram_copy("--__-_-____--_--");
+
+	ASSERT_EQ('-', diagram_copy[2]);
+	ASSERT_EQ('_', diagram_copy[3]);
+
 }
 
 TEST(TimeDiagramMethods, exeptions) {
@@ -231,16 +324,23 @@ TEST(TimeDiagramMethods, exeptions) {
 	Prog3_1::Diagram diagram_exp(1);
 
 	//Try to copy negative times
-	ASSERT_ANY_THROW(diagram_exp *= (-3));
+	ASSERT_ANY_THROW(diagram_exp(-3));
 
 	//Try to shift diagram left negative times
-	ASSERT_ANY_THROW(diagram_exp < -4);
+	ASSERT_ANY_THROW(diagram_exp <<= -4);
 
 	//Try to shift diagram right negative times
-	ASSERT_ANY_THROW(diagram_exp < -5);
+	ASSERT_ANY_THROW(diagram_exp <<= -5);
+
+	Prog3_1::Diagram diagram_exp2(1);
 
 	//Try to change wrong diagram
-	ASSERT_ANY_THROW(diagram_exp({ -2, 4 }));
-	ASSERT_ANY_THROW(diagram_exp({ 5, 6 }));
-	ASSERT_ANY_THROW(diagram_exp({ 1, 664 }));
+	ASSERT_ANY_THROW(diagram_exp2("--------", 55));
+	ASSERT_ANY_THROW(diagram_exp2("_", 102));
+	ASSERT_ANY_THROW(diagram_exp2("*", -6));
+
+	//Test indexation
+	ASSERT_ANY_THROW(diagram_exp2[-25]);
+	ASSERT_ANY_THROW(diagram_exp2[585]);
+
 }

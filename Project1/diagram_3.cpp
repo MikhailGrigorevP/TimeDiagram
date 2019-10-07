@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "diagram_2.h"
+#include "diagram_3.h"
 
 namespace Prog3_1 {
 
@@ -28,8 +28,7 @@ namespace Prog3_1 {
 		}
 	}
 
-	char* getstr(std::istream& i)
-	{
+	char* getstr(std::istream& i) {
 		char* ptr = (char*)malloc(1);
 		char buf[81];
 		int len = 0;
@@ -84,8 +83,45 @@ namespace Prog3_1 {
 		return '*';
 	}
 
+	//Copy constructor
+	Diagram::Diagram(const Diagram& diagram_tmp) : size(diagram_tmp.size), end(diagram_tmp.end), SZ(diagram_tmp.SZ) {
+		diagram = new State[SZ];
+		for (int i = 0; i < end; ++i)
+			diagram[i] = diagram_tmp.diagram[i];
+	}
+
+	//Move construct
+	Diagram::Diagram(Diagram&& diagram_tmp) : size(diagram_tmp.size), end(diagram_tmp.end), SZ(diagram_tmp.SZ), diagram(diagram_tmp.diagram) {
+		diagram_tmp.diagram = nullptr;
+	}
+
+	Diagram& Diagram::operator =(const Diagram& diagram_tmp) {
+		if (this != &diagram_tmp) {
+			end = diagram_tmp.end;
+			SZ = diagram_tmp.SZ;
+			delete[] diagram;
+			diagram = new State[SZ];
+			for (int i = 0; i < end; ++i)
+				diagram[i] = diagram_tmp.diagram[i];
+		}
+		return *this;
+	}
+
+	Diagram& Diagram::operator =(Diagram&& diagram_tmp) {
+		int tmp = end;
+		end = diagram_tmp.end;
+		diagram_tmp.end = tmp;
+		tmp = SZ;
+		SZ = diagram_tmp.SZ;
+		diagram_tmp.SZ = tmp;
+		State* ptr = diagram;
+		diagram = diagram_tmp.diagram;
+		diagram_tmp.diagram = ptr;
+		return *this;
+	}
+
 	// 2 - MaxInit constructor
-	Diagram::Diagram(int state) :end(1), size(MAX_TIME) {
+	Diagram::Diagram(int state) : SZ(1), end(1), size(MAX_TIME), diagram(new State[1]) {
 
 		if ((state < -1) || (state > 1)) {
 			throw std::exception(" >>> Undefuned state");
@@ -119,6 +155,18 @@ namespace Prog3_1 {
 			throw std::exception(" >>> Empty diagram");
 		}
 
+		SZ = 1;
+		for (int i = 1; i < len; ++i) {
+			if (diagram[i] != diagram[i - 1])
+				++SZ;
+			if (returnState(diagram[i]) == 2)
+				break;
+		}
+
+
+
+		this->diagram = new State[SZ];
+
 		for (int i = 0; i <= len; ++i) {
 			state = returnState(ch);
 			if ((diagram[i] != ch) || (i == len)) {
@@ -145,6 +193,7 @@ namespace Prog3_1 {
 		else if (size == 0) {
 			throw std::exception(" >>> Empty diagram");
 		}
+
 	}
 
 	// 4 -Input
@@ -174,6 +223,17 @@ namespace Prog3_1 {
 		if (returnState(ch) == 2) {
 			throw std::exception(" >>> Empty diagram");
 		}
+
+		_diagram.SZ = 1;
+		for (int i = 1; i < len; ++i) {
+			if (diagram[i] != diagram[i - 1])
+				++_diagram.SZ;
+		}
+
+		//if (_diagram.SZ == 0)
+		//	++_diagram.SZ;
+
+		_diagram.diagram = new State[_diagram.SZ];
 
 		for (int i = 0; i <= len; ++i) {
 			state = returnState(ch);
@@ -206,8 +266,7 @@ namespace Prog3_1 {
 	}
 
 	// 4 -Output
-	std::ostream& operator << (std::ostream& s, const Diagram& diagram)
-	{
+	std::ostream& operator << (std::ostream& s, const Diagram& diagram) {
 		char state;
 		if (diagram.end == 0)
 			s << "Stack is empty";
@@ -223,33 +282,56 @@ namespace Prog3_1 {
 	}
 
 	// 5 - Unit
-	Diagram& Diagram::operator +=(const Diagram& diagram) {
-		int time;
-		Diagram tmp(diagram);
-		bool first = true;
+	Diagram& Diagram::operator +=(const Diagram& tmp_d) {
+
+		if ((size + tmp_d.size) > MAX_TIME) {
+			std::cout << " >>> size overflow\n";
+		}
 
 
-		for (int i = 0; i < tmp.getEnd(); ++i) {
-			if (first) {
-				first = false;
-				if ((end > 0) && (tmp.diagram[0].state == this->diagram[end - 1].state)) {
-					time = ((size + tmp.diagram[i].time) <= MAX_TIME) ? tmp.diagram[i].time : MAX_TIME - size;
-					size += time;
-					this->diagram[end - 1].time += time;
-					continue;
-				}
-			}
-			time = ((size + tmp.diagram[i].time) <= MAX_TIME) ? tmp.diagram[i].time : MAX_TIME - size;
-			if (time != 0) {
-				this->diagram[end] = { tmp.diagram[i].state, time };
-				size += time;
-				++end;
-			}
-			if (time != tmp.diagram[i].time) {
-				std::cout << " >>> Unit of diagrams is bigger than allowed time. Second diagram was cutted\n";
+		State* new_diagram = new State[SZ];
+		new_diagram = diagram;
+		Diagram tmp(tmp_d);
+
+		int new_end = 0;
+
+		for (int i = 0; i < tmp_d.end; ++i) {
+			if ((size + tmp.diagram[i].time) >= MAX_TIME) {
+				tmp.diagram[i].time = MAX_TIME - size;
+				size = MAX_TIME;
+				new_end++;
 				break;
 			}
+			size += tmp.diagram[i].time;
+			new_end++;
 		}
+
+		if (tmp.diagram[0].state == diagram[end - 1].state) {
+			SZ = SZ + new_end - 1;
+			diagram = new State[SZ];
+			for (int i = 0; i < end; ++i) {
+				diagram[i] = new_diagram[i];
+			}
+			diagram[end - 1].time += tmp.diagram[0].time;
+			for (int i = end; i < (end + new_end); ++i) {
+				diagram[i] = tmp.diagram[i - end + 1];
+			}
+			end = SZ;
+		}
+		else {
+			SZ = SZ + new_end;
+			diagram = new State[SZ];
+			for (int i = 0; i < end; ++i) {
+				diagram[i] = new_diagram[i];
+			}
+			for (int i = end; i < (end + new_end); ++i) {
+				diagram[i] = tmp.diagram[i - end];
+			}
+			end = SZ;
+		}
+
+		delete[] new_diagram;
+
 		return *this;
 	}
 
@@ -290,10 +372,24 @@ namespace Prog3_1 {
 				time += fulltime - 1;
 
 				if (fulltime < losttime) {
-					for (int k = end; k > i; k--)
+
+					State* new_diagram = diagram;
+					diagram = new State[++SZ];
+					for (int k = 0; k < end; ++k)
+					{
+						diagram[k] = new_diagram[k];
+					}
+					for (int k = end; k > i; --k)
 					{
 						diagram[k] = diagram[k - 1];
 					}
+					delete[] new_diagram;
+
+					//for (int k = end; k > i; k--)
+					//{
+					//	diagram[k] = diagram[k - 1];
+					//}
+
 					++end;
 					diagram[i + 1].time = losttime - fulltime;
 					size += diagram[i + 1].time;
@@ -314,6 +410,10 @@ namespace Prog3_1 {
 					j++;
 				}
 
+				tmp_diagram.SZ = end - j;
+				tmp_diagram.diagram = new State[tmp_diagram.SZ];
+
+
 				for (int k = j; k < end; k++)
 				{
 					tmp_diagram.diagram[tmp_diagram.end] = diagram[k];
@@ -321,13 +421,14 @@ namespace Prog3_1 {
 					tmp_diagram.size += diagram[k].time;
 					++tmp_diagram.end;
 				}
-				end = i + 1;
+				SZ = end = i + 1;
 				break;
 			}
 			++i;
 		}
 
 		n_diagram += tmp_diagram;
+
 		*this += n_diagram;
 
 		std::cout << std::endl;
@@ -373,10 +474,15 @@ namespace Prog3_1 {
 			if (diagram[end - 1].time > time) {
 				diagram[end - 1].time -= time;
 				if (diagram[0].state != diagram[end - 1].state) {
+
+					State* new_diagram = diagram;
+					SZ += 1;
+					diagram = new State[SZ];
 					for (int i = end; i > 0; --i) {
-						diagram[i] = diagram[i - 1];
+						diagram[i] = new_diagram[i - 1];
 					}
-					diagram[0] = { diagram[end].state, time };
+					diagram[0] = { new_diagram[end - 1].state, time };
+					delete[] new_diagram;
 					++end;
 				}
 				else {
@@ -387,13 +493,23 @@ namespace Prog3_1 {
 			else {
 				time -= diagram[end - 1].time;
 				if (diagram[0].state != diagram[end - 1].state) {
-					for (int i = end; i > 0; --i) {
+					State tmp = diagram[end - 1];
+					for (int i = end - 1; i > 0; --i) {
 						diagram[i] = diagram[i - 1];
 					}
-					diagram[0] = diagram[end];
+					diagram[0] = tmp;
 				}
 				else {
+
 					diagram[0].time += diagram[end - 1].time;
+
+					State* new_diagram = diagram;
+					SZ -= 1;
+					diagram = new State[SZ];
+					for (int i = 0; i < end - 1; ++i) {
+						diagram[i] = new_diagram[i];
+					}
+					delete[] new_diagram;
 					--end;
 				}
 			}
@@ -417,7 +533,16 @@ namespace Prog3_1 {
 				if (diagram[end - 1].state == diagram[0].state)
 					diagram[end - 1].time += time;
 				else {
-					diagram[end] = { diagram[0].state, time };
+
+					State* new_diagram = diagram;
+					SZ += 1;
+					diagram = new State[SZ];
+					for (int i = 0; i < end; ++i) {
+						diagram[i] = new_diagram[i];
+					}
+
+					diagram[end] = { new_diagram[0].state, time };
+					delete[] new_diagram;
 					++end;
 				}
 				time = 0;
@@ -425,15 +550,29 @@ namespace Prog3_1 {
 			else {
 				State tmp = diagram[0];
 				time -= tmp.time;
+
+				State* new_diagram = diagram;
+				SZ -= 1;
+				diagram = new State[SZ];
 				for (int i = 0; i < end - 1; ++i) {
-					diagram[i] = diagram[i + 1];
+					diagram[i] = new_diagram[i + 1];
 				}
+				delete[] new_diagram;
+
 				--end;
 
 				if (diagram[end - 1].state == tmp.state) {
 					diagram[end - 1].time += tmp.time;
 				}
 				else {
+					State* new_diagram = diagram;
+					SZ += 1;
+					diagram = new State[SZ];
+					for (int i = 0; i < end; ++i) {
+						diagram[i] = new_diagram[i];
+					}
+					delete[] new_diagram;
+
 					diagram[end] = tmp;
 					++end;
 				}

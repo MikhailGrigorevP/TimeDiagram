@@ -46,7 +46,7 @@ namespace Prog3_1 {
 		void unit(Diagram diagram);
 
 		// 6 - Change
-		int change(State state);
+		int change(Diagram diagram, int N);
 
 		// 7 - Copy N times
 		int copy(int N);

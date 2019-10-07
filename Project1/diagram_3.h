@@ -1,5 +1,5 @@
-#ifndef _DIAGRAM_2_H_
-#define _DIAGRAM_2_H_
+#ifndef _DIAGRAM_3_H_
+#define _DIAGRAM_3_H_
 #include <iostream>
 namespace Prog3_1 {
 
@@ -14,20 +14,28 @@ namespace Prog3_1 {
 
 	class Diagram {
 	private:
-		static const int MAX_TIME = 50;
-		static const int MAX_SZ = MAX_TIME;
+		const int MAX_TIME = 50;
+		int SZ;
 		int size = 0;
 		int end;
-		State diagram[MAX_SZ];
+		State* diagram;
 
 	public:
 
-		int getMaxSize() { return MAX_SZ; };
+		Diagram(const Diagram&);
+		Diagram(Diagram&&);
+
+		~Diagram() { delete[] diagram; }
+
+		Diagram& operator =(const Diagram&);
+		Diagram& operator =(Diagram&&);
+
+		int getMaxSize() { return SZ; };
 		int getCurrTime() { return size; };
 		int getEnd() { return end; };
 
 		// 1 - Empty constructor
-		Diagram() : end(0), size(0) {}
+		Diagram() : SZ(0), end(0), size(0), diagram(nullptr) {}
 
 		// 2 - MaxInit constructor
 		Diagram(int state);
@@ -39,10 +47,10 @@ namespace Prog3_1 {
 		char operator[] (const int index);
 		const char operator[] (const int index) const;
 
-		// 4 -Input
+		// 4 - Input
 		friend std::istream& operator >> (std::istream& s, Diagram& r);
 
-		// 4 -Output
+		// 4 - Output
 		friend std::ostream& operator << (std::ostream&, const Diagram&);
 
 		// 5 - Unit

@@ -67,42 +67,31 @@ int main()
 	std::cout << diagram_4a;
 	std::cout << std::endl;
 
-	Diagram diagram_5;
+	Diagram diagram_5, diagram;
 	std::cout << "5. Input diagram to change: " << std::endl;
 	std::cin >> diagram_5;
-	std::cout << "Input new state and time: ";
+	std::cout << "Current time = " << diagram_5.getCurrTime() << std::endl;
+	std::cout << "Current size = " << diagram_5.getEnd() << std::endl;
+	std::cout << "Input new diagram and time: ";
 
-	State new_state;
-	char ch;
+	int time;
+	std::cin >> diagram;
 
-	bool good_input(true);
-	do {
+	std::cin >> time;
 
-		std::cin >> ch;
-		std::cin >> new_state.time;
-		new_state.state = returnState(ch);
+	try {
+		diagram_5(diagram, time);
+	}
+	catch (std::exception& ex)
+	{
+		std::cout << ex.what() << std::endl;
+		std::cout << "\n >>  Try again\n";
+	}
 
-		if (std::cin.good()) {
-			good_input = true;
-			try {
-				diagram_5(new_state);
-			}
-			catch (const std::exception& ex)
-			{
-				good_input = false;
-				std::cout << ex.what() << std::endl;
-				std::cout << "\n >>>  Try again\n";
-			}
-		}
-		else {
-			std::cout << " >>> Incorrect input. Try again\n";
-			good_input = false;
-			getClear();
-		}
-	} while (!good_input);
-
-	std::cout << "Diagram :";
+	std::cout << "Diagram :" << std::endl;
 	std::cout << diagram_5;
+	std::cout << "Current time = " << diagram_5.getCurrTime() << std::endl;
+	std::cout << "Current size = " << diagram_5.getEnd() << std::endl;
 	std::cout << std::endl;
 	getClear();
 
@@ -112,6 +101,7 @@ int main()
 	std::cin >> diagram_6;
 	std::cout << "Input num of copy:";
 	int num;
+	bool good_input = true;
 
 	do {
 		std::cin >> num;
@@ -119,7 +109,7 @@ int main()
 		if (std::cin.good()) {
 			good_input = true;
 			try {
-				diagram_6 *= num;
+				diagram_6(num);
 			}
 			catch (std::exception& ex)
 			{
@@ -151,7 +141,7 @@ int main()
 		if (std::cin.good()) {
 			good_input = true;
 			try {
-				diagram_7 < num;
+				diagram_7 <<= num;
 			}
 			catch (std::exception& ex)
 			{
@@ -172,13 +162,12 @@ int main()
 	std::cout << "Input num for right shift: ";
 
 	do {
-
 		std::cin >> num;
 		good_input = true;
 		if (std::cin.good()) {
 			good_input = true;
 			try {
-				diagram_7 > num;
+				diagram_7 >>= num;
 			}
 			catch (std::exception& ex)
 			{
@@ -193,6 +182,7 @@ int main()
 			good_input = false;
 		}
 	} while (!good_input);
+
 	getClear();
 	std::cout << "Shift right. Current size = " << diagram_7.getEnd() << "; Diagram : ";
 	std::cout << diagram_7;

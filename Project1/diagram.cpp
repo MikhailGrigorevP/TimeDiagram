@@ -50,7 +50,7 @@ namespace Prog3_1 {
 		if ((state < -1) || (state > 1)) {
 			throw std::exception(" >>> Undefuned state");
 		}
-		else 
+		else
 			diagram[0] = { state, MAX_TIME };
 	}
 
@@ -73,6 +73,10 @@ namespace Prog3_1 {
 
 		char ch = diagram[0];
 		int state;
+
+		if (returnState(ch) == 2) {
+			throw std::exception(" >>> Empty diagram");
+		}
 
 		for (int i = 0; i <= len; ++i) {
 			state = returnState(ch);
@@ -97,9 +101,7 @@ namespace Prog3_1 {
 		else if (error2) {
 			std::cout << " >> Size of diagram more than max, diagram was cutted\n";
 		}
-		else if (size == 0) {
-			throw std::exception(" >>> Empty diagram");
-		}
+
 	}
 
 	// 4 -Input
@@ -186,7 +188,7 @@ namespace Prog3_1 {
 					continue;
 				}
 			}
-			time = ((size + tmp.diagram[i].time) <= MAX_TIME) ? tmp.diagram[i].time : MAX_TIME - size ;
+			time = ((size + tmp.diagram[i].time) <= MAX_TIME) ? tmp.diagram[i].time : MAX_TIME - size;
 			if (time != 0) {
 				this->diagram[end] = { tmp.diagram[i].state, time };
 				size += time;
@@ -200,70 +202,82 @@ namespace Prog3_1 {
 	}
 
 	// 6 - Change
-	int Diagram::change(State new_state) {
 
-		int curr_time = 0;
+	int Diagram::change(Diagram n_diagram, int time) {
 
 		if (end == 0) {
 			return 0;
 		}
 
-		if ((new_state.state >= 2) || (new_state.state < -1))
-			throw std::exception(" >>> Undefined symbol used");
-		if (new_state.time < 0) {
+		if (time < 0) {
 			throw std::exception(" >>> Time must be more than 0 ");
 		}
-		if (new_state.time > size) {
+
+		if (time > size) {
 			throw std::exception(" >>> Time must be low than current diagram size ");
 		}
 
-		for (int i = 0; i < end; ++i) {
-			for (int j = 0; j < diagram[i].time; ++j, ++curr_time)
-				if (new_state.time == curr_time) {
-					int tmp_time = diagram[i].time;
-					if (tmp_time == 1) {
-						if ((i) && (diagram[i - 1].state == new_state.state)) {
-							diagram[i - 1].time += 1;
-							for (int k = i; k < end - 1; ++k)
-								diagram[i] = diagram[i + 1];
-							--end;
-						}
-						if ((i <= end - 1) && (diagram[i + 1].state == new_state.state)) {
-							diagram[i + 1].time += 1;
-							for (int k = i; k < end - 1; ++k)
-								diagram[i] = diagram[i + 1];
-							--end;
-						}
+		int currtime = 0;
+		int fulltime = n_diagram.size;
+
+		if ((time + fulltime) >= MAX_TIME) {
+			throw std::exception(" >>> Size overflow ");
+		}
+
+		Diagram tmp_diagram;
+		int i = 0;
+		while (currtime < time) {
+			currtime += diagram[i].time;
+			if (currtime >= time) {
+				int losttime = currtime - time + 1;
+				diagram[i].time -= losttime;
+				size -= losttime;
+				int j = i + 1;
+				if (diagram[i].time == 0)
+					--i;
+
+				time += fulltime - 1;
+
+				if (fulltime < losttime) {
+					for (int k = end; k > i; k--)
+					{
+						diagram[k] = diagram[k - 1];
 					}
-					else if ((j == 0) && (i > 0) && (diagram[i - 1].state == new_state.state)) {
-						diagram[i].time -= 1;
-						diagram[i - 1].time += 1;
-					}
-					else if ((j == tmp_time - 1) && (i <= end - 1) && (diagram[i + 1].state == new_state.state)) {
-						diagram[i].time -= 1;
-						diagram[i + 1].time += 1;
-					}
-					else if ((i==0) &&(j==0)) {
-						diagram[i].time -= 1;
-						for (int k = end; k > 0; --k)
-							diagram[k] = diagram[k - 1];
-						end += 1;
-						diagram[0] = { new_state.state, 1 };
-					}
-					else {
-						diagram[i].time = j;
-						for (int k = end + 2; k > i + 1; --k)
-							diagram[k] = diagram[k - 2];
-						diagram[i + 2].time = tmp_time - j - 1;
-						diagram[i + 1].state = new_state.state;
-						diagram[i + 1].time = 1;
-						std::cout << std::endl;
-						end += 2;
-					}
-					return 0;
+					++end;
+					diagram[i + 1].time = losttime - fulltime;
+					size += diagram[i + 1].time;
+					time = 0;
 				}
 
+				while (currtime < time) {
+					currtime += diagram[j].time;
+					if (currtime >= time) {
+						int losttime = diagram[j].time - (currtime - time);
+						diagram[j].time -= losttime;
+						size -= losttime;
+						if (diagram[j].time == 0)
+							++j;
+						break;
+					}
+					size -= diagram[j].time;
+					j++;
+				}
+
+				for (int k = j; k < end; k++)
+				{
+					tmp_diagram.diagram[tmp_diagram.end] = diagram[k];
+					size -= diagram[k].time;
+					tmp_diagram.size += diagram[k].time;
+					++tmp_diagram.end;
+				}
+				end = i + 1;
+				break;
+			}
+			++i;
 		}
+
+		n_diagram.unit(tmp_diagram);
+		this->unit(n_diagram);
 
 		std::cout << std::endl;
 		return 0;
@@ -284,6 +298,8 @@ namespace Prog3_1 {
 
 		for (int i = 0; i < n; ++i)
 		{
+			if (size == MAX_TIME)
+				break;
 			this->unit(temp);
 		}
 		return 0;
