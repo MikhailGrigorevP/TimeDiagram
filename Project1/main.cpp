@@ -5,7 +5,7 @@ using namespace Prog3_1;
 int main()
 {
 
-	//std::cout << "PROJECT A: \n\n";
+	std::cout << "PROJECT A: \n\n";
 
 	//Diagram diagram_1;
 	//std::cout << "1. Diagram without init: ";
@@ -95,98 +95,98 @@ int main()
 	std::cout << "Current size = " << diagram_5.getEnd() << std::endl;
 	std::cout << std::endl;
 	getClear();
+/*
 
+	Diagram diagram_6;
+	std::cout << "6. Input diagram to copy: " << std::endl;
+	diagram_6.input(std::cin);
+	std::cout << "Input num of copy:";
+	int num;
+	bool good_input = true;
+	do {
+		std::cin >> num;
+		good_input = true;
+		if (std::cin.good()) {
+			good_input = true;
+			try {
+				diagram_6.copy(num);
+			}
+			catch (std::exception& ex)
+			{
+				good_input = false;
+				std::cout << ex.what() << std::endl;
+				std::cout << "\n >>  Try again\n";
+			}
+		}
+		else {
+			std::cout << " >> Incorrect input. Try again\n";
+			getClear();
+			good_input = false;
+		}
+	} while (!good_input);
+	getClear();
+	std::cout << "Diagram :";
+	diagram_6.print(std::cout);
+	std::cout << std::endl;
 
-	//Diagram diagram_6;
-	//std::cout << "6. Input diagram to copy: " << std::endl;
-	//diagram_6.input(std::cin);
-	//std::cout << "Input num of copy:";
-	//int num;
+	Diagram diagram_7;
+	std::cout << "7. Input diagram to shift: " << std::endl;
+	diagram_7.input(std::cin);
+	std::cout << "Current size = " << diagram_7.getEnd() << std::endl;
+	std::cout << "Input num for left shift: ";
 
-	//do {
-	//	std::cin >> num;
-	//	good_input = true;
-	//	if (std::cin.good()) {
-	//		good_input = true;
-	//		try {
-	//			diagram_6.copy(num);
-	//		}
-	//		catch (std::exception& ex)
-	//		{
-	//			good_input = false;
-	//			std::cout << ex.what() << std::endl;
-	//			std::cout << "\n >>  Try again\n";
-	//		}
-	//	}
-	//	else {
-	//		std::cout << " >> Incorrect input. Try again\n";
-	//		getClear();
-	//		good_input = false;
-	//	}
-	//} while (!good_input);
-	//getClear();
-	//std::cout << "Diagram :";
-	//diagram_6.print(std::cout);
-	//std::cout << std::endl;
+	do {
+		std::cin >> num;
+		good_input = true;
+		if (std::cin.good()) {
+			good_input = true;
+			try {
+				diagram_7.shiftLeft(num);
+			}
+			catch (std::exception& ex)
+			{
+				good_input = false;
+				std::cout << ex.what() << std::endl;
+				std::cout << "\n >>  Try again\n";
+			}
+		}
+		else {
+			std::cout << " >> Incorrect input. Try again\n";
+			getClear();
+			good_input = false;
+		}
+	} while (!good_input);
+	getClear();
+	std::cout << "Shift left. Current size = " << diagram_7.getEnd() << "; Diagram : ";
+	diagram_7.print(std::cout);
+	std::cout << "Input num for right shift: ";
 
-	//Diagram diagram_7;
-	//std::cout << "7. Input diagram to shift: " << std::endl;
-	//diagram_7.input(std::cin);
-	//std::cout << "Current size = " << diagram_7.getEnd() << std::endl;
-	//std::cout << "Input num for left shift: ";
+	do {
 
-	//do {
-	//	std::cin >> num;
-	//	good_input = true;
-	//	if (std::cin.good()) {
-	//		good_input = true;
-	//		try {
-	//			diagram_7.shiftLeft(num);
-	//		}
-	//		catch (std::exception& ex)
-	//		{
-	//			good_input = false;
-	//			std::cout << ex.what() << std::endl;
-	//			std::cout << "\n >>  Try again\n";
-	//		}
-	//	}
-	//	else {
-	//		std::cout << " >> Incorrect input. Try again\n";
-	//		getClear();
-	//		good_input = false;
-	//	}
-	//} while (!good_input);
-	//getClear();
-	//std::cout << "Shift left. Current size = " << diagram_7.getEnd() << "; Diagram : ";
-	//diagram_7.print(std::cout);
-	//std::cout << "Input num for right shift: ";
-
-	//do {
-
-	//	std::cin >> num;
-	//	good_input = true;
-	//	if (std::cin.good()) {
-	//		good_input = true;
-	//		try {
-	//			diagram_7.shiftRight(num);
-	//		}
-	//		catch (std::exception& ex)
-	//		{
-	//			good_input = false;
-	//			std::cout << ex.what() << std::endl;
-	//			std::cout << "\n >>  Try again\n";
-	//		}
-	//	}
-	//	else {
-	//		std::cout << " >> Incorrect input. Try again\n";
-	//		getClear();
-	//		good_input = false;
-	//	}
-	//} while (!good_input);
-	//getClear();
-	//std::cout << "Shift right. Current size = " << diagram_7.getEnd() << "; Diagram : ";
-	//diagram_7.print(std::cout);
-	//std::cout << std::endl;
-
+		std::cin >> num;
+		good_input = true;
+		if (std::cin.good()) {
+			good_input = true;
+			try {
+				diagram_7.shiftRight(num);
+			}
+			catch (std::exception& ex)
+			{
+				good_input = false;
+				std::cout << ex.what() << std::endl;
+				std::cout << "\n >>  Try again\n";
+			}
+		}
+		else {
+			std::cout << " >> Incorrect input. Try again\n";
+			getClear();
+			good_input = false;
+		}
+	} while (!good_input);
+	getClear();
+	std::cout << "Shift right. Current size = " << diagram_7.getEnd() << "; Diagram : ";
+	diagram_7.print(std::cout);
+	std::cout << std::endl;
+*/
 	return 0;
 }

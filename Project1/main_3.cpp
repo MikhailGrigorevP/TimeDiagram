@@ -2,6 +2,14 @@
 #include <sstream>
 
 using namespace Prog3_1;
+
+Diagram func(Diagram p) {	
+//	Diagram a(p);
+	std::cout << "func()\n";
+	return p;
+}
+
+
 int main()
 {
 	std::cout << "PROJECT C: \n\n";
@@ -21,10 +29,29 @@ int main()
 	//std::cout << diagram_2b;
 	//std::cout << std::endl;
 
-	//Diagram diagram_2c(-1);
+	//int state, sym;
+
+	//std::cin >> sym;
+	//std::cin >> state;
+
+	//Diagram diagram_2c(sym, state);
 	//std::cout << "2c. Diagram with -1 init: ";
 	//std::cout << diagram_2c;
 	//std::cout << std::endl;
+
+	//Diagram y(1, 15);
+	//std::cout << "y: " << y;
+	//Diagram x = func(y);
+
+
+	//std::cout << "x = func(y)\nx: " << x;
+
+	//Diagram ob1("--___-__-__");
+	//Diagram ob2("_---__-___-__");
+	//std::cout << "\nob1: " << ob1;
+	//std::cout << "ob2: " << ob2;
+	//ob1 = ob2;
+	//std::cout << "ob1 = ob2\nob1: " << ob1;
 
 	//Diagram diagram_3a("---_____--");
 	//Diagram diagram_3b("-_____----__");
@@ -70,33 +97,33 @@ int main()
 	//getClear();
 
 
-	Diagram diagram_5, diagram;
-	std::cout << "5. Input diagram to change: " << std::endl;
-	std::cin >> diagram_5;
-	std::cout << "Current time = " << diagram_5.getCurrTime() << std::endl;
-	std::cout << "Current size = " << diagram_5.getEnd() << std::endl;
-	std::cout << "Input new diagram and time: ";
+	//Diagram diagram_5, diagram;
+	//std::cout << "5. Input diagram to change: " << std::endl;
+	//std::cin >> diagram_5;
+	//std::cout << "Current time = " << diagram_5.getCurrTime() << std::endl;
+	//std::cout << "Current size = " << diagram_5.getEnd() << std::endl;
+	//std::cout << "Input new diagram and time: ";
 
-	int time;
-	std::cin >> diagram;
+	//int time;
+	//std::cin >> diagram;
 
-	std::cin >> time;
+	//std::cin >> time;
 
-	try {
-		diagram_5(diagram, time);
-	}
-	catch (std::exception& ex)
-	{
-		std::cout << ex.what() << std::endl;
-		std::cout << "\n >>  Try again\n";
-	}
+	//try {
+	//	diagram_5(diagram, time);
+	//}
+	//catch (std::exception& ex)
+	//{
+	//	std::cout << ex.what() << std::endl;
+	//	std::cout << "\n >>  Try again\n";
+	//}
 
-	std::cout << "Diagram :" << std::endl;
-	std::cout << diagram_5;
-	std::cout << "Current time = " << diagram_5.getCurrTime() << std::endl;
-	std::cout << "Current size = " << diagram_5.getEnd() << std::endl;
-	std::cout << std::endl;
-	getClear();
+	//std::cout << "Diagram :" << std::endl;
+	//std::cout << diagram_5;
+	//std::cout << "Current time = " << diagram_5.getCurrTime() << std::endl;
+	//std::cout << "Current size = " << diagram_5.getEnd() << std::endl;
+	//std::cout << std::endl;
+	//getClear();
 
 
 	//Diagram diagram_6;
@@ -134,8 +161,8 @@ int main()
 	//std::cin >> diagram_7;
 	//std::cout << "Current size = " << diagram_7.getEnd() << std::endl;
 	//std::cout << "Input num for left shift: ";
-	//int num;
-	//bool good_input = true;
+
+
 
 	//do {
 	//	std::cin >> num;

@@ -1,5 +1,6 @@
 #ifndef _DIAGRAM_3_H_
 #define _DIAGRAM_3_H_
+
 #include <iostream>
 namespace Prog3_1 {
 
@@ -14,7 +15,7 @@ namespace Prog3_1 {
 
 	class Diagram {
 	private:
-		const int MAX_TIME = 50;
+		//const int MAX_TIME = 50;
 		int SZ;
 		int size = 0;
 		int end;
@@ -22,7 +23,9 @@ namespace Prog3_1 {
 
 	public:
 
+		//COPY
 		Diagram(const Diagram&);
+		/*MOVE*/
 		Diagram(Diagram&&);
 
 		~Diagram() { delete[] diagram; }
@@ -38,7 +41,7 @@ namespace Prog3_1 {
 		Diagram() : SZ(0), end(0), size(0), diagram(nullptr) {}
 
 		// 2 - MaxInit constructor
-		Diagram(int state);
+		Diagram(int state, int time = 1);
 
 		// 3 -ASCII constructor
 		Diagram(const char* diagram);
@@ -67,6 +70,7 @@ namespace Prog3_1 {
 
 		// 9 - shift left
 		Diagram& operator <<= (int N);
+
 	};
 }
 #endif

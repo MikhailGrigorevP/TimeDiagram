@@ -1,8 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
-
 #include "diagram_3.h"
-
 namespace Prog3_1 {
+
 
 	int returnState(char ch) {
 		switch (ch) {
@@ -108,6 +107,8 @@ namespace Prog3_1 {
 	}
 
 	Diagram& Diagram::operator =(Diagram&& diagram_tmp) {
+
+		std::cout << "2";
 		int tmp = end;
 		end = diagram_tmp.end;
 		diagram_tmp.end = tmp;
@@ -121,13 +122,13 @@ namespace Prog3_1 {
 	}
 
 	// 2 - MaxInit constructor
-	Diagram::Diagram(int state) : SZ(1), end(1), size(MAX_TIME), diagram(new State[1]) {
+	Diagram::Diagram(int state, int time) : SZ(1), end(1), size(time), diagram(new State[1]) {
 
 		if ((state < -1) || (state > 1)) {
 			throw std::exception(" >>> Undefuned state");
 		}
 		else
-			diagram[0] = { state, MAX_TIME };
+			diagram[0] = { state, time };
 	}
 
 
@@ -141,12 +142,9 @@ namespace Prog3_1 {
 		size = 0;
 		bool error1(false), error2(false);
 
-		if (strlen(diagram) <= MAX_TIME)
-			len = strlen(diagram);
-		else {
-			len = MAX_TIME;
-			error2 = true;
-		}
+
+		len = strlen(diagram);
+
 
 		char ch = diagram[0];
 		int state;
@@ -208,14 +206,11 @@ namespace Prog3_1 {
 		int len;
 		int time = 0;
 		_diagram.size = 0;
-		bool error1(false), error2(false);
+		bool error1(false);
 
-		if (strlen(diagram) <= _diagram.MAX_TIME)
+
 			len = strlen(diagram);
-		else {
-			len = _diagram.MAX_TIME;
-			error2 = true;
-		}
+
 
 		char ch = diagram[0];
 		int state;
@@ -255,9 +250,6 @@ namespace Prog3_1 {
 		if (error1) {
 			std::cout << " >> Undefined symbols used, diagram was cutted\n";
 		}
-		else if (error2) {
-			std::cout << " >> Size of diagram more than max, diagram was cutted\n";
-		}
 		else if (_diagram.size == 0) {
 			throw std::exception(" >>> Empty diagram");
 		}
@@ -284,9 +276,6 @@ namespace Prog3_1 {
 	// 5 - Unit
 	Diagram& Diagram::operator +=(const Diagram& tmp_d) {
 
-		if ((size + tmp_d.size) > MAX_TIME) {
-			std::cout << " >>> size overflow\n";
-		}
 
 
 		State* new_diagram = new State[SZ];
@@ -296,12 +285,6 @@ namespace Prog3_1 {
 		int new_end = 0;
 
 		for (int i = 0; i < tmp_d.end; ++i) {
-			if ((size + tmp.diagram[i].time) >= MAX_TIME) {
-				tmp.diagram[i].time = MAX_TIME - size;
-				size = MAX_TIME;
-				new_end++;
-				break;
-			}
 			size += tmp.diagram[i].time;
 			new_end++;
 		}
@@ -352,10 +335,6 @@ namespace Prog3_1 {
 
 		int currtime = 0;
 		int fulltime = n_diagram.size;
-
-		if ((time + fulltime) >= MAX_TIME) {
-			throw std::exception(" >>> Size overflow ");
-		}
 
 		Diagram tmp_diagram;
 		int i = 0;
@@ -450,8 +429,6 @@ namespace Prog3_1 {
 
 		for (int i = 0; i < n; ++i)
 		{
-			if (size == MAX_TIME)
-				break;
 			*this += temp;
 		}
 

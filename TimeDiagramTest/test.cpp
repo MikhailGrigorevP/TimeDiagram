@@ -328,6 +328,7 @@ TEST(TimeDiagramMethods, exeptions) {
 	Prog3_1::Diagram diagram_exp2(1);
 	//Try to change wrong diagram
 	ASSERT_ANY_THROW(diagram_exp2.change("--------", 55));
+	ASSERT_ANY_THROW(diagram_exp2.change("--_______________--", 46));
 	ASSERT_ANY_THROW(diagram_exp2.change("_", 102));
 	ASSERT_ANY_THROW(diagram_exp2.change("*", -6));
 }
